@@ -1,5 +1,6 @@
 """Scythi aApplication.
 """
+import json
 import logging
 from os import path
 import sys
@@ -152,6 +153,8 @@ def result_read_event(req):
     if str(req.accept).lower() != 'application/json':
         raise exc.HTTPForbidden()
 
+    env = Env()
+
     version_id = req.matchdict['version_id']
     project_id = req.matchdict['project_id']
     scroll_key = req.params['api_key']
@@ -161,14 +164,17 @@ def result_read_event(req):
     logger.info('project_id -> %s', project_id)
     logger.info('scroll_key -> %s', scroll_key)
 
-    res = req.response
-    res.content_type = 'application/json'
     req.add_response_callback(no_cache)
-    return dict([('p', [])])
+
+    prefix = env.get('RESPONSE_PREFIX', '')
+    res = Response(prefix + json.dumps(dict([('p', [])])), status='200 OK')
+    res.content_type = 'application/json'
+    res.headers['Access-Control-Allow-Origin'] = '*'
+    res.headers['X-Content-Type-Options'] = 'nosniff'
+    return res
 
 
 # -- main
-
 
 def main(_, **settings):
     """The main function.
