@@ -152,10 +152,12 @@ def result_read_event(req):
     if str(req.accept).lower() != 'application/json':
         raise exc.HTTPForbidden()
 
+    version_id = req.matchdict['version_id']
     project_id = req.matchdict['project_id']
     scroll_key = req.params['api_key']
 
     # FIXME: check value
+    logger.info('version_id -> %s', version_id)
     logger.info('project_id -> %s', project_id)
     logger.info('scroll_key -> %s', scroll_key)
 
@@ -194,10 +196,16 @@ def main(_, **settings):
             # FIXME: check actual value
             return info['match']['project_id'] == 'development'
 
+    def version_id_predicator(info, _request):
+        """Validates `version_id` parameter.
+        """
+        if info['route'].name in ('result_read_event',):
+            return info['match']['version_id'] in ('1.0',)
+
     config.add_route(
         'result_read_event',
-        '/v1.0/projects/{project_id}/results/read',
-        custom_predicates=(project_id_predicator,)
+        '/v{version_id}/projects/{project_id}/results/read',
+        custom_predicates=(project_id_predicator,version_id_predicator,)
     )
 
     config.scan()
