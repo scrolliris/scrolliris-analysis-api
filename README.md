@@ -8,14 +8,12 @@ https://gitlab.com/lupine-software/scythia/badges/master/coverage.svg)](
 https://gitlab.com/lupine-software/scythia/commits/master)
 
 ```txt
-                    _
   ()               | |    o
   /\  __       _|_ | |        __,
  /  \/    |   | |  |/ \   |  /  |
 /(__/\___/ \_/|/|_/|   |_/|_/\_/|_/
              /|
              \|
-
 Scythia;
 ```
 
@@ -27,6 +25,7 @@ https://gitlab.com/lupine-software/scythia)
 
 * Python `3.5.0`
 * Node.js `7.8.0` (build)
+* DynamoDB
 
 
 ## Setup
@@ -88,25 +87,29 @@ Use `CherryPy` as wsgi server.
 
 ### Publish
 
-At first, setup for production environment.
+E.g. Google App Engine
 
 ```zsh
-: e.g. use google app engine
-(venv) % curl -sLO https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/\
-google-cloud-sdk-157.0.0-linux-x86_64.tar.gz
+: take latest sdk from https://cloud.google.com/sdk/downloads
+% cd lib
+(venv) % curl -sLO https://dl.google.com/dl/cloudsdk/channels/rapid/ \
+  downloads/google-cloud-sdk-<VERSION>-linux-x86_64.tar.gz
 
 : check sha256 checksum
-(venv) % sha256sum google-cloud-sdk-157.0.0-linux-x86_64.tar.gz
-95b98fc696f38cd8b219b4ee9828737081f2b5b3bd07a3879b7b2a6a5349a73f  \
-google-cloud-sdk-157.0.0-linux-x86_64.tar.gz
+(venv) % echo "<CHECKSUM>" "" ./google-cloud-sdk-<VERSION>-linux-x86_64.tar.gz \
+  | sha256sum -c -
+./google-cloud-sdk-<VERSION>-linux-x86_64.tar.gz: OK
+(venv) % tar zxvf google-cloud-sdk-<VERSION>-linux-x86_64.tar.gz
 
-(venv) % tar zxvf google-cloud-sdk-157.0.0-linux-x86_64.tar.gz
+: setup lib/ as a root for sdk
 (venv) % CLOUDSDK_ROOT_DIR=. ./google-cloud-sdk/install.sh
+(venv) % cd ../
 
 : load sdk tools
 (venv) % source ./bin/load-gcloud
 (venv) % gcloud init
 ```
+
 
 ### Deployment
 
