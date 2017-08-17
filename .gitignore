@@ -10,6 +10,7 @@ __pycache__/
 /*.yaml
 
 /bin/gitlab-ci-multi-runner
+/lib/dynamodb_local*
 
 /venv*
 

@@ -145,7 +145,7 @@ It requires `docker`.
 
 ## License
 
-Scythia; Copyright (c) 2017 Lupine Software, LLC.
+Scythia; Copyright (c) 2017 Lupine Software LLC
 
 
 This is free software;  

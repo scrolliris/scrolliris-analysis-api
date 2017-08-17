@@ -12,6 +12,7 @@ with open(os.path.join(here, 'CHANGELOG')) as f:
     CHANGELOG = f.read()
 
 requires = [
+    'boto3',
     'colorlog',
     'Paste',
     'PasteScript',
@@ -19,6 +20,7 @@ requires = [
     'pyramid',
     'pyramid_assetviews',
     'pyramid_mako',
+    'pyramid_services',
 ]
 
 development_requires = [

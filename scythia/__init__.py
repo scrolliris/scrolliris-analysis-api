@@ -14,6 +14,7 @@ from pyramid.threadlocal import get_current_registry
 from pyramid.view import forbidden_view_config, notfound_view_config
 import pyramid.httpexceptions as exc
 
+from .services import ICollator
 from .env import Env
 
 # -- configurations
@@ -157,15 +158,11 @@ def result_read_event(req):
 
     version_id = req.matchdict['version_id']
     project_id = req.matchdict['project_id']
-    scroll_key = req.params['api_key']
-
-    # FIXME: check value
-    logger.info('version_id -> %s', version_id)
-    logger.info('project_id -> %s', project_id)
-    logger.info('scroll_key -> %s', scroll_key)
+    api_key = req.params['api_key']
 
     req.add_response_callback(no_cache)
 
+    # FIXME: fetch result
     prefix = env.get('RESPONSE_PREFIX', '')
     res = Response(prefix + json.dumps(dict([('p', [])])), status='200 OK')
     res.content_type = 'application/json'
@@ -195,14 +192,33 @@ def main(_, **settings):
         config.add_asset_views(
             STATIC_DIR, filenames=filenames, http_cache=cache_max_age)
 
-    def project_id_predicator(info, _request):
-        """Validates `project_id` parameter.
+    def session_predicator(inf, req):
+        """Validates `project_id` and `api_key` using SesionCollator.
         """
-        if info['route'].name in ('result_read_event',):
-            # FIXME: check actual value
-            return info['match']['project_id'] == 'development'
+        route_name = inf['route'].name
+        if route_name in ('result_read_eventl',):
+            if 'api_key' not in req.params or \
+               'X-CSRF-Token' not in req.headers:
+                raise exc.HTTPForbidden()
 
-    def version_id_predicator(info, _request):
+            project_id = inf['match']['project_id']
+            api_key = req.params['api_key']
+            token = req.headers['X-CSRF-Token']
+
+            logger.info('project_id -> %s, api_key -> %s, token -> %s, '
+                        'context -> read', project_id, api_key, token)
+
+            collator = req.find_service(iface=ICollator, name='session')
+            if not collator.collate(project_id=project_id, api_key=api_key,
+                                    token=token, context='read'):
+                logger.error('invalid session token')
+                raise exc.HTTPNotAcceptable()
+
+            return True
+
+        return False
+
+    def version_predicator(info, _req):
         """Validates `version_id` parameter.
         """
         if info['route'].name in ('result_read_event',):
@@ -211,10 +227,12 @@ def main(_, **settings):
     config.add_route(
         'result_read_event',
         '/v{version_id}/projects/{project_id}/results/read',
-        custom_predicates=(project_id_predicator,version_id_predicator,)
+        custom_predicates=(version_predicator, session_predicator,)
     )
 
     config.scan()
+    config.include('.services')
+
     app = config.make_wsgi_app()
     app = TransLogger(app, setup_console_handler=False)
     return app
