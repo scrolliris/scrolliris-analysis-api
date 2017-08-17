@@ -11,6 +11,7 @@ __pycache__/
 
 /bin/gitlab-ci-multi-runner
 /lib/dynamodb_local*
+/lib/*sdk*
 
 /venv*
 
