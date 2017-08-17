@@ -196,7 +196,7 @@ def main(_, **settings):
         """Validates `project_id` and `api_key` using SesionCollator.
         """
         route_name = inf['route'].name
-        if route_name in ('result_read_eventl',):
+        if route_name in ('result_read_event',):
             if 'api_key' not in req.params or \
                'X-CSRF-Token' not in req.headers:
                 raise exc.HTTPForbidden()

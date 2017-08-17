@@ -88,11 +88,13 @@ class SessionCollator(BaseDynamoDBServiceObject):
         try:
             ts = self.__class__.generate_timestamp(minutes=60)
             res = self.table.query(
-                KeyConditionExpression=Key('token').eq(token),
-                FilterExpression=Attr('initiated_at').gt(ts) &
-                Attr('project_id').eq(project_id) &
-                Attr('api_key').eq(api_key) &
-                Attr('context').eq(context)
+                KeyConditionExpression=(
+                    Key('token').eq(token) & Key('initiated_at').gt(ts)),
+                FilterExpression=(
+                    Attr('project_id').eq(project_id) &
+                    Attr('api_key').eq(api_key) &
+                    Attr('context').eq(context)
+                )
             )
             items = res['Items']
             return len(items) == 1
