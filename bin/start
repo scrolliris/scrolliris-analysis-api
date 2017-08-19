@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+set -e
+
+root_dir=$(cd $(dirname $0)/../; pwd)
+
+make db-migrate
+$root_dir/bin/serve -e production -c config/production.ini

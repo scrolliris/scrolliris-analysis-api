@@ -20,4 +20,4 @@ ENV HOST 0.0.0.0
 ENV PORT 8080
 EXPOSE 8080
 
-CMD ./bin/serve -e production -c config/production.ini
+CMD ./bin/start
