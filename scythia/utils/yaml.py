@@ -4,7 +4,6 @@ import os
 from ast import literal_eval
 from datetime import datetime, timedelta
 from contextlib import contextmanager
-import yaml
 
 
 def tag_datetime_utcnow_plus_timedelta(loader, node):
@@ -14,6 +13,9 @@ def tag_datetime_utcnow_plus_timedelta(loader, node):
 @contextmanager
 def yaml_loader(settings={}):
     def load_yaml(yml_file):
+        # only for development and testing
+        import yaml
+
         data = {}
         if os.path.isfile(yml_file):
             with open(yml_file, 'r') as f:
