@@ -1,4 +1,4 @@
-"""Scythi aApplication.
+"""Scythia application package.
 """
 import json
 import logging
@@ -14,8 +14,9 @@ from pyramid.threadlocal import get_current_registry
 from pyramid.view import forbidden_view_config, notfound_view_config
 import pyramid.httpexceptions as exc
 
-from .services import ICollator
 from .env import Env
+from .models import ReadingResult
+from .services import ICollator
 
 # -- configurations
 
@@ -160,11 +161,22 @@ def result_read_event(req):
     project_id = req.matchdict['project_id']
     api_key = req.params['api_key']
 
+    collator = req.find_service(iface=ICollator, name='session')
+    site_id = collator.site_id
+    if not site_id:
+        raise exc.HTTPInternalServerError()
+
+    logger.info('version_id -> %s, project_id -> %s, site_id -> %s, '
+                'api_key -> %s, context -> read',
+                version_id, project_id, site_id, api_key)
+
     req.add_response_callback(no_cache)
 
-    # FIXME: fetch result
+    result = ReadingResult.fetch_paragraph_median_by(
+        project_id=project_id, site_id=site_id)
+
     prefix = env.get('RESPONSE_PREFIX', '')
-    res = Response(prefix + json.dumps(dict([('p', [])])), status='200 OK')
+    res = Response(prefix + json.dumps(dict(result)), status='200 OK')
     res.content_type = 'application/json'
     res.headers['Access-Control-Allow-Origin'] = '*'
     res.headers['X-Content-Type-Options'] = 'nosniff'
@@ -232,6 +244,7 @@ def main(_, **settings):
 
     config.scan()
     config.include('.services')
+    config.include('.models')
 
     app = config.make_wsgi_app()
     app = TransLogger(app, setup_console_handler=False)

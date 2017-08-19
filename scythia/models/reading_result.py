@@ -46,3 +46,23 @@ class ReadingResult(Base):  # pylint: disable=too-few-public-methods
     def __repr__(self):
         return '<ReadingResult id:{} element_id:{} code:{} path:{}>'.format(
             self.id, self.element_id, self.code, self.path)
+
+    @classmethod
+    def fetch_paragraph_median_by(cls, project_id='', site_id=0):
+        """Fetches median values by site.
+        """
+        res = cls.select(
+            cls.project_id, cls.site_id,
+            cls.subject_type, cls.subject_index, cls.median_value
+        ).where(
+            cls.project_id == project_id,
+            cls.site_id == site_id,
+            cls.subject_type == 'paragraph',
+        ).order_by(
+            cls.subject_index.asc()
+        )
+        data = [{
+            'index': r.subject_index,
+            'value': r.median_value,
+        } for r in res]
+        return [('p', data)]

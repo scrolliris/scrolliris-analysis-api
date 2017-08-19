@@ -54,6 +54,10 @@ class BaseDynamoDBServiceObject(object):
 class SessionCollator(BaseDynamoDBServiceObject):
     """SessionInitiator Service.
     """
+    def __init__(self, *args, **kwargs):
+        self.item = None
+        super().__init__(*args, **kwargs)
+
     @classmethod
     def options(cls, settings):
         """Returns options for this collator.
@@ -79,6 +83,17 @@ class SessionCollator(BaseDynamoDBServiceObject):
         return int((datetime.now(timezone.utc) -
                     timedelta(**kwargs)).timestamp())
 
+    @property
+    def site_id(self):
+        """Return site_id after collation.
+        """
+        item = self.item
+        if not isinstance(item, dict) or 'site_id' not in item:
+            logger = logging.getLogger(__name__)
+            logger.error('site_id is missing: item: %s', item)
+            return None
+        return item['site_id']
+
     def collate(self, project_id='', api_key='', token='', context='read'):
         """Check session using token.
         """
@@ -97,7 +112,12 @@ class SessionCollator(BaseDynamoDBServiceObject):
                 )
             )
             items = res['Items']
-            return len(items) == 1
+            if len(items) != 1:
+                return False
+
+            # set item after view
+            self.item = items[0]
+            return True
         except Exception as e:  # pylint: disable=broad-except
             logger = logging.getLogger(__name__)
             logger.error('session provisioning error -> %s', e)
