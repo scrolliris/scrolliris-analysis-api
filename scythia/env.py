@@ -64,6 +64,7 @@ class Env():
             # Note: these values are updated if exist but not empty
             'wsgi.url_scheme': 'WSGI_URL_SCHEME',
             'response_prefix': 'RESPONSE_PREFIX',
+            'database.url': 'DATABASE_URL',
             'aws.access_key_id': 'AWS_ACCESS_KEY_ID',
             'aws.secret_access_key': 'AWS_SECRET_ACCESS_KEY',
             'dynamodb.endpoint_url': 'DYNAMODB_ENDPOINT_URL',

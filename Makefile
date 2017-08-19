@@ -6,6 +6,8 @@ else
 	env := $(ENV)
 endif
 
+app = scythia
+
 # installation
 
 setup:
@@ -17,6 +19,37 @@ setup:
 serve:
 	./bin/serve --env ${env} --config config/${env}.ini --reload
 .PHONY: serve
+
+# database
+
+db-init:
+	${app}_manage 'config/${env}.ini#${app}' db init
+.PHONY: db-init
+
+db-migrate:
+	${app}_manage 'config/${env}.ini#${app}' db migrate
+.PHONY: db-migrate
+
+db-rollback:
+	${app}_manage 'config/${env}.ini#${app}' db rollback
+.PHONY: db-rollback
+
+db-seed:
+	${app}_manage 'config/${env}.ini#${app}' db seed
+.PHONY: db-seed
+
+db-drop:
+	${app}_manage 'config/${env}.ini#${app}' db drop
+.PHONY: db-drop
+
+db-reset:
+	${app}_manage 'config/${env}.ini#${app}' db drop
+	${app}_manage 'config/${env}.ini#${app}' db init
+	${app}_manage 'config/${env}.ini#${app}' db migrate
+ifneq (test, $(ENV))
+	${app}_manage 'config/${env}.ini#${app}' db seed
+endif
+.PHONY: db-reset
 
 # testing
 

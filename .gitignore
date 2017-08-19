@@ -8,6 +8,8 @@ __pycache__/
 .env
 .coverage
 /*.yaml
+/db/**/*.yml
+!/db/**/*.sample.yml
 
 /bin/gitlab-ci-multi-runner
 /lib/dynamodb_local*
@@ -21,5 +23,5 @@ __pycache__/
 /*-sdk*
 /bin/*.sh
 
-/tmp/logs/*.log
+/tmp/logs/*
 !/tmp/logs/.gitignore

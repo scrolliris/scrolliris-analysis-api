@@ -1,0 +1,61 @@
+---
+reading_results:
+  - element_id: A1d5w910aCn10715a9270a0245nlC1N30bb19a1CB-1-MTp0cnkuc2Nyb2xsaXJpcy5jb20vLw-P-001
+    project_id: ''
+    site_id: 1
+    code: MTp0cnkuc2Nyb2xsaXJpcy5jb20vLw
+    host: doc.example.org
+    path: /
+    subject_type: paragraph
+    subject_index: 1
+    last_value: 126.6
+    mean_value: 38.4567
+    median_value: 38.4567
+    sd_value: 19.64
+    variance_value: 1059.5
+    total_count: 59
+    trusted_section:
+      - 10.51
+      - 98.26
+    created_at: !datetime.utcnow+timedelta -3600
+    updated_at: !datetime.utcnow+timedelta -3600
+
+  - element_id: A1d5w910aCn10715a9270a0245nlC1N30bb19a1CB-1-MTp0cnkuc2Nyb2xsaXJpcy5jb20vLw-P-002
+    project_id: ''
+    site_id: 1
+    code: MTp0cnkuc2Nyb2xsaXJpcy5jb20vLw
+    host: doc.example.org
+    path: /
+    subject_type: paragraph
+    subject_index: 2
+    last_value: 19.8
+    mean_value: 97.4529
+    median_value: 125.873
+    sd_value: 19.64
+    variance_value: 985.36
+    total_count: 48
+    trusted_section:
+      - 3.22
+      - 186.81
+    created_at: !datetime.utcnow+timedelta -3600
+    updated_at: !datetime.utcnow+timedelta -3600
+
+  - element_id: A1d5w910aCn10715a9270a0245nlC1N30bb19a1CB-1-MTp0cnkuc2Nyb2xsaXJpcy5jb20vLw-P-003
+    project_id: ''
+    site_id: 1
+    code: MTp0cnkuc2Nyb2xsaXJpcy5jb20vLw
+    host: doc.example.org
+    path: /
+    subject_type: paragraph
+    subject_index: 3
+    last_value: 20.7
+    mean_value: 66.565
+    median_value: 65.381
+    sd_value: 19.64
+    variance_value: 768.65
+    total_count: 26
+    trusted_section:
+      - 33.29
+      - 166.54
+    created_at: !datetime.utcnow+timedelta -3600
+    updated_at: !datetime.utcnow+timedelta -3600

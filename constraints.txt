@@ -2,8 +2,11 @@ boto3==1.4.4
 colorlog==2.10.0
 Paste==2.0.3
 PasteScript==2.0.2
+peewee==2.9.1
+psycopg2==2.6.2
 python-dotenv==0.6.4
-pyramid==1.9
+pyramid==1.8.5
+peewee_migrate==0.12.3
 pyramid_assetviews==1.0a3
 pyramid-mako==1.0.2
 pyramid_services==0.4
@@ -15,6 +18,9 @@ CherryPy==10.2.2
 flake8==3.3.0
 pylint==1.7.2
 waitress==1.0.2
+
+# development, testing
+PyYAML==3.12
 
 # testing
 pytest==3.1.3

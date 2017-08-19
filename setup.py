@@ -16,6 +16,9 @@ requires = [
     'colorlog',
     'Paste',
     'PasteScript',
+    'peewee',
+    'peewee_migrate',
+    'psycopg2',
     'python-dotenv',
     'pyramid',
     'pyramid_assetviews',
@@ -26,12 +29,14 @@ requires = [
 development_requires = [
     'flake8',
     'pylint',
+    'PyYAML',
     'waitress',
 ]
 
 testing_requires = [
     'pytest',
     'pytest-cov',
+    'PyYAML',
     'WebTest',
 ]
 
@@ -73,5 +78,6 @@ setup(
     [console_scripts]
     scythia_pserve = scythia.scripts.pserve:main
     scythia_pstart = scythia.scripts.pstart:main
+    scythia_manage = scythia.scripts.manage:main
     """,
 )
