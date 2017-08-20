@@ -40,5 +40,3 @@ class NumericRangeField(Field):
         """Returns value from database
         """
         return value
-
-
