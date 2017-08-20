@@ -61,5 +61,14 @@ class ReadingResult(Base):  # pylint: disable=too-few-public-methods
         ).order_by(
             cls.subject_index.asc()
         )
-        data = dict([(r.subject_index, r.median_value) for r in res])
-        return [('p', data)]
+        data = dict([(str(r.subject_index), r.median_value) for r in res])
+        # normalize
+        values = data.values()
+        min_v = min(values)
+        max_v = max(values)
+        result = []
+        for k in sorted(data.keys()):
+            result.append((k, '{0:.2f}'.format(
+                (data[k] - min_v) / (max_v - min_v))))
+
+        return [('p', dict(result))]
