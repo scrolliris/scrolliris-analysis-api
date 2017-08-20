@@ -12,10 +12,10 @@ def tag_datetime_utcnow_plus_timedelta(loader, node):
 
 @contextmanager
 def yaml_loader(settings={}):
-    def load_yaml(yml_file):
-        # only for development and testing
-        import yaml
+    # only for development and testing
+    import yaml
 
+    def load_yaml(yml_file):
         data = {}
         if os.path.isfile(yml_file):
             with open(yml_file, 'r') as f:
