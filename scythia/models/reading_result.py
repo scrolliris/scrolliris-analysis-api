@@ -61,8 +61,5 @@ class ReadingResult(Base):  # pylint: disable=too-few-public-methods
         ).order_by(
             cls.subject_index.asc()
         )
-        data = [{
-            'index': r.subject_index,
-            'value': r.median_value,
-        } for r in res]
+        data = dict([(r.subject_index, r.median_value) for r in res])
         return [('p', data)]
