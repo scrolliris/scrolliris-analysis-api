@@ -47,6 +47,7 @@ def result_read_event(req):
 
     result = ReadingResult.fetch_paragraph_median_by(
         project_id=project_id, site_id=site_id)
+    logger.info(result)
 
     prefix = env.get('RESPONSE_PREFIX', '')
     res = Response(prefix + json.dumps(dict(result)), status='200 OK')
