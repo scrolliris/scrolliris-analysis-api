@@ -13,7 +13,6 @@ with open(os.path.join(here, 'CHANGELOG')) as f:
 
 requires = [
     'boto3',
-    'colorlog',
     'Paste',
     'PasteScript',
     'peewee',
@@ -27,6 +26,7 @@ requires = [
 ]
 
 development_requires = [
+    'colorlog',
     'flake8',
     'pylint',
     'PyYAML',
@@ -34,6 +34,7 @@ development_requires = [
 ]
 
 testing_requires = [
+    'colorlog',
     'pytest',
     'pytest-cov',
     'PyYAML',
