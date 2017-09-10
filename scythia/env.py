@@ -23,7 +23,7 @@ class Env():
             load_dotenv(dotenv_file)
 
         if os.environ.get('ENV', None) == 'test':  # maps test_
-            from tests import test_vars
+            from test import test_vars
 
             for v in test_vars():
                 test_v = os.environ.get('TEST_' + v, None)
@@ -34,7 +34,7 @@ class Env():
         return os.environ.get(key, default)
 
     def set(self, key, value):
-        return os.environ.set(key, value)
+        os.environ[key] = value
 
     @reify
     def host(self):

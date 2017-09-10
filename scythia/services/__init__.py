@@ -1,5 +1,5 @@
 # pylint: disable=inherit-non-class,no-self-argument,no-method-argument
-"""Service package.
+"""Service package
 """
 import base64
 from datetime import datetime, timedelta, timezone
@@ -13,7 +13,7 @@ from zope.interface import Interface
 
 
 class ICollator(Interface):
-    """Interface as collator service.
+    """Interface as collator service
     """
     # pylint: disable=missing-docstring
 
@@ -22,7 +22,7 @@ class ICollator(Interface):
 
 
 class ContextError(Exception):
-    """Custom error class for session context.
+    """Custom error class for session context
     """
     def __init__(self, value):
         super().__init__()
@@ -34,7 +34,7 @@ class ContextError(Exception):
 
 class BaseDynamoDBServiceObject(object):
     # pylint: disable=too-few-public-methods
-    """Service using AWS DynamoDB.
+    """Service using AWS DynamoDB
     """
     def __init__(self, *_, **kwargs):
         session = boto3.session.Session(
@@ -52,7 +52,7 @@ class BaseDynamoDBServiceObject(object):
 
 
 class SessionCollator(BaseDynamoDBServiceObject):
-    """SessionInitiator Service.
+    """SessionInitiator Service
     """
     def __init__(self, *args, **kwargs):
         self.item = None
@@ -60,7 +60,7 @@ class SessionCollator(BaseDynamoDBServiceObject):
 
     @classmethod
     def options(cls, settings):
-        """Returns options for this collator.
+        """Returns options for this collator
         """
         _options = {
             'aws_access_key_id': settings['aws.access_key_id'],
@@ -74,7 +74,7 @@ class SessionCollator(BaseDynamoDBServiceObject):
 
     @classmethod
     def generate_timestamp(cls, **kwargs):
-        """Generates Unix Timestamp int using timedelta in UTC.
+        """Generates Unix Timestamp int using timedelta in UTC
 
         NOTE:
           `datetime.utcnow().timestamp()` is invalid, because `timestamp()`
@@ -85,7 +85,7 @@ class SessionCollator(BaseDynamoDBServiceObject):
 
     @property
     def site_id(self):
-        """Return site_id after collation.
+        """Return site_id after collation
         """
         item = self.item
         if not isinstance(item, dict) or 'site_id' not in item:
@@ -95,7 +95,7 @@ class SessionCollator(BaseDynamoDBServiceObject):
         return item['site_id']
 
     def collate(self, project_id='', api_key='', token='', context='read'):
-        """Check session using token.
+        """Check session using token
         """
         if context != 'read':
             raise ContextError('invalid context {0:s}'.format(context))
@@ -126,11 +126,11 @@ class SessionCollator(BaseDynamoDBServiceObject):
 
 
 def session_collator_factory():
-    """The session collator service factory.
+    """The session collator service factory
     """
 
     def _session_collator(_, req):
-        """Actual collator factory method.
+        """Actual collator factory method
         """
         options = SessionCollator.options(req.settings)
         return SessionCollator(req, **options)
@@ -139,7 +139,7 @@ def session_collator_factory():
 
 
 def includeme(config):
-    """Initializes service objects.
+    """Initializes service objects
     """
     config.register_service_factory(
         session_collator_factory(),
