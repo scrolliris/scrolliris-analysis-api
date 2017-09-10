@@ -51,7 +51,7 @@ def result_read_event(req):
 
     prefix = env.get('RESPONSE_PREFIX', '')
     res = Response(prefix + json.dumps(dict(result)), status='200 OK')
-    res.content_type = 'application/json'
+    res.content_type = 'application/json; charset=utf-8'
     res.headers['Access-Control-Allow-Origin'] = '*'
     res.headers['X-Content-Type-Options'] = 'nosniff'
     return res
