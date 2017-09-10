@@ -1,11 +1,8 @@
 # pylint: disable=inherit-non-class,no-self-argument,no-method-argument
 """Service package
 """
-import base64
 from datetime import datetime, timedelta, timezone
 import logging
-import os
-import uuid
 
 import boto3
 from boto3.dynamodb.conditions import Key, Attr

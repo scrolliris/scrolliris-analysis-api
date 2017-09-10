@@ -8,7 +8,7 @@ from playhouse.pool import PooledPostgresqlDatabase
 db = PooledPostgresqlDatabase(None, threadlocals=True)
 
 # pylint: disable=wrong-import-position
-from .reading_result import ReadingResult
+from .reading_result import ReadingResult  # noqa
 
 __all__ = (
     'ReadingResult',

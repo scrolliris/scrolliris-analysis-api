@@ -8,6 +8,8 @@ import pytest
 def setup(config):  # pylint: disable=unused-argument
     """The setup
     """
+    pass
+
 
 def test_routing_to_humans_txt(dummy_app):
     """Test Routing /humans.txt.

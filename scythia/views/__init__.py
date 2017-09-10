@@ -1,6 +1,7 @@
 """View package
 """
 
+
 def tpl(filename):
     """HTML Template Utility
     """

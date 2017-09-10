@@ -1,7 +1,6 @@
 """Scythia application package
 """
 import logging
-from os import path
 import sys
 from wsgiref.handlers import BaseHandler
 
@@ -12,6 +11,7 @@ from pyramid.threadlocal import get_current_registry
 from .env import Env
 
 # -- configurations
+
 
 # pylint: disable=protected-access
 def ignore_broken_pipes(self):
