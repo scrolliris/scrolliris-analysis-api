@@ -13,7 +13,7 @@ __pycache__/
 !/db/**/*.sample.yml
 
 /bin/gitlab-ci-multi-runner
-/lib/dynamodb_local*
+/lib/*_local*
 /lib/*sdk*
 
 /venv*
@@ -25,4 +25,5 @@ __pycache__/
 /bin/*.sh
 
 /tmp/logs/*
+/tmp/_cache/*
 !/tmp/logs/.gitignore
