@@ -19,6 +19,7 @@ INI_FILE = os.path.join(TEST_DIR, '..', 'config', 'testing.ini')
 
 # -- Shared fixtures
 
+
 @pytest.fixture(scope='session')
 def dotenv() -> None:
     """Loads dotenv file
