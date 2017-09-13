@@ -1,0 +1,5 @@
+/* API */
+Last update: 2017/09/13
+Language: English
+Format: JSON
+Contact: feedback@lupine-software.com
