@@ -8,7 +8,7 @@ from paste.translogger import TransLogger
 from pyramid.config import Configurator
 from pyramid.threadlocal import get_current_registry
 
-from .env import Env
+from scythia.env import Env
 
 # -- configurations
 
