@@ -26,7 +26,7 @@ def result_read_event(req):
 
     # FIXME: use decorator
     if str(req.accept).lower() != 'application/json':
-        raise exc.HTTPForbidden()
+        raise exc.HTTPNotFound()
 
     env = Env()
 
@@ -45,8 +45,12 @@ def result_read_event(req):
 
     req.add_response_callback(no_cache)
 
-    result = ReadingResult.fetch_paragraph_median_by(
-        project_id=project_id, site_id=site_id)
+    try:
+        result = ReadingResult.fetch_paragraph_median_by(
+            project_id=project_id, site_id=site_id)
+    except Exception as e:
+        logger.error(e)
+
     logger.info(result)
 
     prefix = env.get('RESPONSE_PREFIX', '')

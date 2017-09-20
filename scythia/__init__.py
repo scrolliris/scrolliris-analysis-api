@@ -47,7 +47,7 @@ def resolve_env_vars(settings):
     """
     env = Env()
     s = settings.copy()
-    for k, v in env.settings_mappings.items():
+    for k, v in env.settings_mappings.items(): # pylint: disable=no-member
         # ignores missing key or it has a already value in config
         if k not in s or s[k]:
             continue
@@ -67,7 +67,7 @@ def main(_, **settings):
     """
     from .request import CustomRequest
 
-    config = Configurator(settings=resolve_env_vars(settings))
+    config = Configurator(settings=resolve_env_vars(dict(settings)))
     config.set_request_factory(CustomRequest)
 
     config.scan()

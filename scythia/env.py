@@ -59,7 +59,7 @@ class Env():
         return self._value == 'production'
 
     @reify
-    def settings_mappings(self):
+    def settings_mappings(self) -> dict:
         return {
             # Note: these values are updated if exist but not empty
             'wsgi.url_scheme': 'WSGI_URL_SCHEME',

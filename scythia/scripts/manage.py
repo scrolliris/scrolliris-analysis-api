@@ -157,7 +157,7 @@ def main():
             raise Exception(err_msg.format('|'.join(db_actions)))
 
     settings = get_appsettings(config_uri, options=options)
-    settings = resolve_env_vars(settings)
+    settings = resolve_env_vars(dict(settings))
 
     cli = '{0}{1}'.format(command.capitalize(), 'Cli')
     c = globals()[cli](settings)
