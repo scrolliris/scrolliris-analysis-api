@@ -25,6 +25,6 @@ __pycache__/
 /*-sdk*
 /bin/*.sh
 
-/tmp/logs/*
 /tmp/_cache/*
-!/tmp/logs/.gitignore
+/tmp/log/*
+!/tmp/log/.gitignore
