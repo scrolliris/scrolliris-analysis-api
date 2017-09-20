@@ -57,12 +57,9 @@ test:
 	ENV=test py.test -c 'config/testing.ini' -s -q
 .PHONY: test
 
-test-coverage:
+coverage:
 	ENV=test py.test -c 'config/testing.ini' -s -q --cov=scythia --cov-report \
-	  term-missing:skip-covered
-.PHONY: test-coverage
-
-coverage: | test-coverage
+	 term-missing:skip-covered
 .PHONY: coverage
 
 # utilities
@@ -73,9 +70,10 @@ check:
 
 clean:
 	find . ! -readable -prune -o -print \
-		! -path "./.git/*" ! -path "./venv*" \
-		! -path "./doc/*" ! -path "./tmp/_cache*" | \
-	  grep -E "(__pycache__|\.egg-info|\.pyc|\.pyo)" | xargs rm -rf;
+	 ! -path "./.git/*" ! -path "./venv*" \
+	 ! -path "./doc/*" ! -path "./tmp/_cache*" \
+	 ! -path "./lib/*" | \
+	 grep -E "(__pycache__|\.egg-info|\.pyc|\.pyo)" | xargs rm -rf
 .PHONY: clean
 
 .DEFAULT_GOAL = coverage
