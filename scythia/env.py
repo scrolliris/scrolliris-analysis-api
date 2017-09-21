@@ -9,8 +9,12 @@ class Env():
     VALUES = ('development', 'test', 'production')
 
     def __init__(self):
+        self._value = self.__class__.env_name()
+
+    @classmethod
+    def env_name(cls):
         v = str(os.environ.get('ENV', None))
-        self._value = v if v in self.VALUES else 'production'
+        return v if v in cls.VALUES else 'production'
 
     @classmethod
     def load_dotenv_vars(cls, dotenv_file=None):
@@ -22,13 +26,26 @@ class Env():
             from dotenv import load_dotenv
             load_dotenv(dotenv_file)
 
-        if os.environ.get('ENV', None) == 'test':  # maps test_
-            from test import test_vars
+        # update vars using prefix such as {TEST_|DEVELOPMENT_|PRODUCTION_}
+        for _, v in cls.settings_mappings().items():
+            prefix = '{}_'.format(cls.env_name().upper())
+            env_v = os.environ.get(prefix + v, None)
+            if env_v is not None:
+                os.environ[v] = env_v
 
-            for v in test_vars():
-                test_v = os.environ.get('TEST_' + v, None)
-                if test_v is not None:
-                    os.environ[v] = test_v
+    @classmethod
+    def settings_mappings(cls) -> dict:
+        return {
+            # Note: these values are updated if exist but not empty
+            'wsgi.url_scheme': 'WSGI_URL_SCHEME',
+            'response_prefix': 'RESPONSE_PREFIX',
+            'database.url': 'DATABASE_URL',
+            'aws.access_key_id': 'AWS_ACCESS_KEY_ID',
+            'aws.secret_access_key': 'AWS_SECRET_ACCESS_KEY',
+            'dynamodb.endpoint_url': 'DYNAMODB_ENDPOINT_URL',
+            'dynamodb.region_name': 'DYNAMODB_REGION_NAME',
+            'dynamodb.table_name': 'DYNAMODB_TABLE_NAME',
+        }
 
     def get(self, key, default=None):
         return os.environ.get(key, default)
@@ -57,17 +74,3 @@ class Env():
     @reify
     def is_production(self):
         return self._value == 'production'
-
-    @reify
-    def settings_mappings(self) -> dict:
-        return {
-            # Note: these values are updated if exist but not empty
-            'wsgi.url_scheme': 'WSGI_URL_SCHEME',
-            'response_prefix': 'RESPONSE_PREFIX',
-            'database.url': 'DATABASE_URL',
-            'aws.access_key_id': 'AWS_ACCESS_KEY_ID',
-            'aws.secret_access_key': 'AWS_SECRET_ACCESS_KEY',
-            'dynamodb.endpoint_url': 'DYNAMODB_ENDPOINT_URL',
-            'dynamodb.region_name': 'DYNAMODB_REGION_NAME',
-            'dynamodb.table_name': 'DYNAMODB_TABLE_NAME',
-        }

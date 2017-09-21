@@ -37,6 +37,7 @@ testing_requires = [
     'colorlog',
     'pytest',
     'pytest-cov',
+    'pytest-mock',
     'PyYAML',
     'WebTest',
 ]

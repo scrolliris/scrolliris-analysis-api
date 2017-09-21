@@ -20,6 +20,7 @@ INI_FILE = os.path.join(TEST_DIR, '..', 'config', 'testing.ini')
 
 # -- Shared fixtures
 
+
 @pytest.fixture(scope='session')
 def dotenv() -> None:
     """Loads dotenv file
@@ -29,6 +30,7 @@ def dotenv() -> None:
     # same as scythia:main
     dotenv_file = os.path.join(TEST_DIR, '..', '.env')
     Env.load_dotenv_vars(dotenv_file)
+
     return
 
 
