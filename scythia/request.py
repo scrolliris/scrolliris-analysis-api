@@ -4,7 +4,8 @@ import ipaddress
 from pyramid.decorator import reify
 from pyramid.request import Request
 
-from .env import Env
+from scythia.env import Env
+from scythia.models import db
 
 __all__ = ['CustomRequest']
 
@@ -20,6 +21,9 @@ TRUSTED_NETWORKS = [ipaddress.ip_network(n) for n in [
     'fc00::/7',        # private ipv6 range
 ]]
 
+ASSET_PATH = re.compile(r'^\/?(.*\.txt)')
+HEALTH_CHECK_PATH = re.compile(r'^\/_ah\/health\/?$')
+
 
 class CustomRequest(Request):
     def __init__(self, *args, **kwargs):
@@ -34,6 +38,29 @@ class CustomRequest(Request):
 
         new_args = (env_dict, args[1:])
         super().__init__(*new_args, **kwargs)
+
+        env_dict = (new_args[0] or {})  # with new_args
+        use_db = not ASSET_PATH.match(env_dict['PATH_INFO']) and \
+                 not HEALTH_CHECK_PATH.match(env_dict['PATH_INFO'])
+
+        if use_db:
+            self.__class__.open_db()
+            # register finished callbacks
+            self.add_finished_callback(self.__class__.close_db)
+
+    @classmethod
+    def open_db(cls):
+        """Opens database connection if it's not opened.
+        """
+        if db.is_closed():
+            db.connect()
+
+    @classmethod
+    def close_db(cls, req):
+        """Closes database connection if it's not closed.
+        """
+        if not req.db.is_closed():
+            req.db.close()
 
     @property
     def settings(self):
