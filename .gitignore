@@ -14,7 +14,7 @@ __pycache__/
 /db/**/*.yml
 !/db/**/*.sample.yml
 
-/bin/publish
+/bin/deliver
 /bin/gitlab-ci-multi-runner
 
 /lib/*_local*
