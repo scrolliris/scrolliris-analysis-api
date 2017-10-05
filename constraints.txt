@@ -16,6 +16,7 @@ CherryPy==10.2.2
 
 # development
 flake8==3.3.0
+flake8_docstrings==1.0.3
 pylint==1.7.2
 waitress==1.0.2
 
