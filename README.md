@@ -2,23 +2,15 @@
 
 `//`
 
-[![build status](https://gitlab.com/lupine-software/scythia/badges/master/build.svg)](
-https://gitlab.com/lupine-software/scythia/commits/master) [![coverage report](
-https://gitlab.com/lupine-software/scythia/badges/master/coverage.svg)](
-https://gitlab.com/lupine-software/scythia/commits/master)
+[![build status](https://gitlab.com/scrolliris/scythia/badges/master/build.svg)](
+https://gitlab.com/scrolliris/scythia/commits/master) [![coverage report](
+https://gitlab.com/scrolliris/scythia/badges/master/coverage.svg)](
+https://gitlab.com/scrolliris/scythia/commits/master)
 
-```txt
-  ()               | |    o
-  /\  __       _|_ | |        __,
- /  \/    |   | |  |/ \   |  /  |
-/(__/\___/ \_/|/|_/|   |_/|_/\_/|_/
-             /|
-             \|
-Scythia;
-```
 
-[https://gitlab.com/lupine-software/scythia](
-https://gitlab.com/lupine-software/scythia)
+## Repository
+
+https://gitlab.com/scrolliris/scythia
 
 
 ## Requirements
@@ -148,7 +140,10 @@ It requires `docker`.
 
 ## License
 
-Scythia; Copyright (c) 2017 Lupine Software LLC
+```
+...
+Copyright (c) 2017 Lupine Software LLC
+```
 
 
 This is free software;  
