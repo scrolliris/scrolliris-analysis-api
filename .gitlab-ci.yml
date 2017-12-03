@@ -29,8 +29,11 @@ test:
   services:
     - postgres:9.6
   variables:
-    ENV: test
     PIP_CACHE_DIR: pip-cache
+    ENV: test
+    POSTGRES_DB: winterthur_test
+    POSTGRES_USER: winterthur
+    POSTGRES_PASSWORD: winterthur
   before_script:
     - python --version
     - pip --version
