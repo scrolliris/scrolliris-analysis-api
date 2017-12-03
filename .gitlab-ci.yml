@@ -4,7 +4,7 @@ stages:
 
 check:
   stage: check-style
-  image: python:3.5
+  image: python:3.5.4
   variables:
     ENV: development
     PIP_CACHE_DIR: pip-cache
@@ -12,9 +12,9 @@ check:
     - python --version
     - pip --version
     - pip install --upgrade pip setuptools
-  script:
     - make clean
     - make setup
+  script:
     - make check
   cache:
     untracked: true
@@ -25,7 +25,9 @@ check:
 
 test:
   stage: run-test
-  image: python:3.5
+  image: python:3.5.4
+  services:
+    - postgres:9.6
   variables:
     ENV: test
     PIP_CACHE_DIR: pip-cache
@@ -33,9 +35,8 @@ test:
     - python --version
     - pip --version
     - pip install --upgrade pip setuptools
-  script:
-    - make clean
     - make setup
+  script:
     - make coverage
   cache:
     untracked: true
