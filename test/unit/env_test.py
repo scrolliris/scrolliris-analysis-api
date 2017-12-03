@@ -1,15 +1,10 @@
-# pylint: disable=invalid-name
-"""Unit test for env utility
-"""
 import pytest
 
-from scythia.env import Env
+from winterthur.env import Env
 
 
 @pytest.fixture(autouse=True)
 def setup(config):  # pylint: disable=unused-argument
-    """The setup
-    """
     pass
 
 
@@ -33,7 +28,7 @@ def test_settings_mappings():
     assert ('wsgi.url_scheme', 'WSGI_URL_SCHEME') in result.items()
 
 
-def test_env_value_via_is_test(mocker):
+def test_env_value_via_is_test():
     env = Env()
     assert env.is_test
     assert not env.is_production

@@ -1,5 +1,3 @@
-"""The result model.
-"""
 from datetime import datetime
 
 from peewee import (
@@ -14,8 +12,6 @@ from .base import Base, NumericRangeField
 
 
 class ReadingResult(Base):  # pylint: disable=too-few-public-methods
-    """Result model class.
-    """
     # pylint: disable=too-many-ancestors
     id = PrimaryKeyField()
     element_id = CharField(max_length=255, unique=True)
@@ -38,8 +34,6 @@ class ReadingResult(Base):  # pylint: disable=too-few-public-methods
     updated_at = DateTimeField(null=False, default=datetime.utcnow)
 
     class Meta:
-        """The meta class of site.
-        """
         # pylint: disable=too-few-public-methods
         db_table = 'reading_results'
 
@@ -49,8 +43,7 @@ class ReadingResult(Base):  # pylint: disable=too-few-public-methods
 
     @classmethod
     def fetch_paragraph_median_by(cls, project_id='', site_id=0):
-        """Fetches median values by site.
-        """
+        """Fetches median values by site."""
         res = cls.select(
             cls.project_id, cls.site_id,
             cls.subject_type, cls.subject_index, cls.median_value

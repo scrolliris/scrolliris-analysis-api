@@ -1,18 +1,15 @@
-"""Route definitions
-"""
 from os import path
 
 import pyramid.httpexceptions as exc
 
-from scythia.env import Env
-from scythia.services import ICollator
+from winterthur.env import Env
+from winterthur.services import ICollator
 
 STATIC_DIR = path.join(path.dirname(path.abspath(__file__)), '../static')
 
 
 def session_predicator(inf, req):
-    """Validates `project_id` and `api_key` using SesionCollator
-    """
+    """Validates `project_id` and `api_key` using SesionCollator."""
     from . import logger
 
     route_name = inf['route'].name
@@ -40,15 +37,12 @@ def session_predicator(inf, req):
 
 
 def version_predicator(info, _req):
-    """Validates `version_id` parameter
-    """
+    """Validates `version_id` parameter."""
     if info['route'].name in ('result_read_event',):
         return info['match']['version_id'] in ('1.0',)
 
 
 def includeme(config):
-    """Set routes
-    """
     env = Env()
     # routes
     # static files at /*

@@ -9,7 +9,7 @@ from peewee import (
     PrimaryKeyField,
 )
 
-from scythia.models.base import Base, NumericRangeField
+from winterthur.models.base import Base, NumericRangeField
 
 
 class ReadingResult(Base):

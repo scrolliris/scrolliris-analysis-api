@@ -1,4 +1,5 @@
 ifeq (, $(ENV))
+	ENV := development
 	env := development
 else ifeq (test, $(ENV))
 	env := testing
@@ -6,21 +7,19 @@ else
 	env := $(ENV)
 endif
 
-app = scythia
+ifeq (, ${NODE_ENV})
+	NODE_ENV := development
+endif
 
-# installation
+app = winterthur
+
+# -- installation
 
 setup:
 	pip install -e '.[${env}]' -c constraints.txt
 .PHONY: setup
 
-# server
-
-serve:
-	./bin/serve --env ${env} --config config/${env}.ini --reload
-.PHONY: serve
-
-# database
+# -- database
 
 db-init:
 	${app}_manage 'config/${env}.ini#${app}' db init
@@ -51,29 +50,37 @@ ifneq (test, $(ENV))
 endif
 .PHONY: db-reset
 
-# testing
+# -- application
+
+# server (development)
+serve:
+	./bin/serve --env ${env} --config config/${env}.ini --reload
+.PHONY: serve
+
+# -- testing
 
 test:
 	ENV=test py.test -c 'config/testing.ini' -s -q
 .PHONY: test
 
 coverage:
-	ENV=test py.test -c 'config/testing.ini' -s -q --cov=scythia --cov-report \
+	ENV=test py.test -c 'config/testing.ini' -s -q --cov=${app} --cov-report \
 	 term-missing:skip-covered
 .PHONY: coverage
 
-# utilities
+# -- utility
 
 check:
 	flake8
 .PHONY: check
 
 clean:
-	find . ! -readable -prune -o -print \
+	find . ! -readable -prune -o \
 	 ! -path "./.git/*" ! -path "./venv*" \
 	 ! -path "./doc/*" ! -path "./tmp/_cache*" \
 	 ! -path "./lib/*" | \
-	 grep -E "(__pycache__|\.egg-info|\.pyc|\.pyo)" | xargs rm -rf
+	 grep -E "(__pycache__|\.egg-info|\.pyc|\.pyo)" | \
+	 xargs rm -rf
 .PHONY: clean
 
 .DEFAULT_GOAL = coverage

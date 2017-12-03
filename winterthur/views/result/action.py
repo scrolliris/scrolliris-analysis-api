@@ -1,24 +1,21 @@
-"""View action module for result read event
-"""
 import json
 
 from pyramid.response import Response
 from pyramid.view import view_config
 import pyramid.httpexceptions as exc
 
-from scythia.views import no_cache
-from scythia.models import ReadingResult
-from scythia.services import ICollator
-from scythia.env import Env
+from winterthur.views import no_cache
+from winterthur.models import ReadingResult
+from winterthur.services import ICollator
+from winterthur.env import Env
 
 
 @view_config(route_name='result_read_event',
              renderer='json',
              request_method='GET')
 def result_read_event(req):
-    """Returns data for reflector canvas.
-    """
-    from scythia import logger
+    """Returns data for reflector canvas."""
+    from winterthur import logger
 
     # FIXME: use decorator
     if 'api_key' not in req.params:

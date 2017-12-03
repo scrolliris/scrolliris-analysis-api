@@ -1,18 +1,13 @@
-# pylint: disable=invalid-name
 import pytest
 
 
 @pytest.fixture(autouse=True)
 def setup(config):  # pylint: disable=unused-argument
-    """The setup
-    """
     pass
 
 
 def test_connection_states_for_assets(dummy_app, mocker):
-    """Test db connection state opening for assets request
-    """
-    from scythia.request import CustomRequest, db
+    from winterthur.request import CustomRequest, db
     mocker.spy(CustomRequest, 'open_db')
     mocker.spy(CustomRequest, 'close_db')
 
@@ -27,9 +22,7 @@ def test_connection_states_for_assets(dummy_app, mocker):
 
 
 def test_connection_states_for_healthcheck(dummy_app, mocker):
-    """Test db connection state opening for health check request
-    """
-    from scythia.request import CustomRequest, db
+    from winterthur.request import CustomRequest, db
     mocker.spy(CustomRequest, 'open_db')
     mocker.spy(CustomRequest, 'close_db')
 
@@ -44,9 +37,7 @@ def test_connection_states_for_healthcheck(dummy_app, mocker):
 
 
 def test_connection_states_for_api(dummy_app, mocker):
-    """Test db connection state opening for api request
-    """
-    from scythia.request import CustomRequest, db
+    from winterthur.request import CustomRequest, db
     mocker.spy(CustomRequest, 'open_db')
     mocker.spy(CustomRequest, 'close_db')
 

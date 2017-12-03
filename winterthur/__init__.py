@@ -1,5 +1,3 @@
-"""Scythia application package
-"""
 import logging
 import sys
 from wsgiref.handlers import BaseHandler
@@ -8,15 +6,14 @@ from paste.translogger import TransLogger
 from pyramid.config import Configurator
 from pyramid.threadlocal import get_current_registry
 
-from scythia.env import Env
+from winterthur.env import Env
 
 # -- configurations
 
 
 # pylint: disable=protected-access
 def ignore_broken_pipes(self):
-    """Ignores unused error message about broken pipe
-    """
+    """Ignores unused error message about broken pipe."""
     if sys.exc_info()[0] != BrokenPipeError:
         BaseHandler.__handle_error_original_(self)
 
@@ -37,14 +34,10 @@ logger.addHandler(sh)
 
 
 def get_settings():
-    """Returns settings from current ini
-    """
     return get_current_registry().settings
 
 
 def resolve_env_vars(settings):
-    """Loads environment variables into settings
-    """
     env = Env()
     s = settings.copy()
     for k, v in Env.settings_mappings().items():
@@ -63,9 +56,7 @@ def resolve_env_vars(settings):
 
 
 def main(_, **settings):
-    """The server main function
-    """
-    from .request import CustomRequest
+    from winterthur.request import CustomRequest
 
     config = Configurator(settings=resolve_env_vars(dict(settings)))
     config.set_request_factory(CustomRequest)

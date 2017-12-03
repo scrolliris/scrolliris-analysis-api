@@ -1,5 +1,3 @@
-"""Utility script for database management.
-"""
 import os
 import sys
 from contextlib import contextmanager
@@ -7,15 +5,13 @@ from contextlib import contextmanager
 from pyramid.paster import get_appsettings, setup_logging
 from pyramid.scripts.common import parse_vars
 
-from scythia import resolve_env_vars
-from scythia.env import Env
-from scythia.models import ReadingResult
-from scythia.utils import yaml_loader
+from winterthur import resolve_env_vars
+from winterthur.env import Env
+from winterthur.models import ReadingResult
+from winterthur.utils import yaml_loader
 
 
 def usage(argv):
-    """Displays script usage.
-    """
     cmd = os.path.basename(argv[0])
     print('usage: %s <config_uri> <command> <action> [var=value]\n'
           '(example: "%s \'development.ini#\' db seed")' % (cmd, cmd))
@@ -23,8 +19,6 @@ def usage(argv):
 
 
 class DbCli(object):
-    """CLI for database (PostgreSQL) management.
-    """
     def __init__(self, settings):
         self.settings = settings
 
@@ -48,21 +42,17 @@ class DbCli(object):
 
     @contextmanager
     def _db(self):
-        from scythia.models import db, init_db
+        from winterthur.models import db, init_db
 
         init_db(self.settings)
 
         yield db
 
     def help(self):  # pylint: disable=no-self-use
-        """Prints usage.
-        """
         print('usage: db {help|init|seed|drop} [var=value]')
         sys.exit(1)
 
     def init(self):
-        """Initializes database.
-        """
         with self._raw_db() as (db, datname):
             q = "SELECT 1 FROM pg_database WHERE datname='{}'".format(datname)
             if db.execute_sql(q).rowcount != 0:
@@ -76,8 +66,6 @@ class DbCli(object):
             db.execute_sql(q)
 
     def migrate(self):
-        """Migrates database schema.
-        """
         from peewee_migrate import Router
 
         with self._db() as db, db.atomic():
@@ -86,8 +74,6 @@ class DbCli(object):
             router.run()
 
     def rollback(self):
-        """Rollbacks a latest migration.
-        """
         from peewee_migrate import Router
 
         with self._db() as db, db.atomic():
@@ -97,8 +83,6 @@ class DbCli(object):
                 router.rollback(router.done[-1])
 
     def seed(self):
-        """Imports db seed records for development.
-        """
         with self._db() as db, db.atomic():
             with yaml_loader(self.settings) as loader:
                 # db/seeds/*.yml
@@ -120,8 +104,6 @@ class DbCli(object):
                             obj.save()
 
     def drop(self):
-        """Drops database.
-        """
         with self._raw_db() as (db, datname):
             q = "SELECT 1 FROM pg_database WHERE datname='{}'".format(datname)
             if db.execute_sql(q).rowcount == 0:
@@ -132,8 +114,6 @@ class DbCli(object):
 
 
 def main():
-    """The Main interface.
-    """
     argv = sys.argv
     if len(argv) < 4:
         usage(argv)

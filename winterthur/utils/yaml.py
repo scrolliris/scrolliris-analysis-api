@@ -1,5 +1,3 @@
-"""YAML Utility module.
-"""
 import os
 from ast import literal_eval
 from datetime import datetime, timedelta

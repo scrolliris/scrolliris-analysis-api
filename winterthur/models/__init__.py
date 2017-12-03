@@ -1,5 +1,3 @@
-"""Model package handles database objects.
-"""
 from urllib.parse import urlparse, parse_qs
 
 from playhouse.pool import PooledPostgresqlDatabase
@@ -16,8 +14,6 @@ __all__ = (
 
 
 def init_db(settings):
-    """Initializes database connection.
-    """
     url = urlparse(settings['database.url'])
     host = url.hostname
     if not host and not url.port:
@@ -43,7 +39,7 @@ def init_db(settings):
 def includeme(config):
     """Model module interface evaluated at include.
 
-    ``config.include('scythia.models')``.
+    ``config.include('winterthur.models')``.
     """
     settings = config.get_settings()
 

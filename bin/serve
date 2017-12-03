@@ -2,20 +2,18 @@
 # set -x
 
 env_name=""
-app_name="scythia"
+app_name="winterthur"
 config_file=""
 
 with_install="no"
 with_reload="no"
 
 text_banner="\
-                    _
-  ()               | |    o
-  /\  __       _|_ | |        __,
- /  \/    |   | |  |/ \   |  /  |
-/(__/\___/ \_/|/|_/|   |_/|_/\_/|_/  by Lupine Software LLC
-             /|
-             \|
+
+(_|   |   |_/o                          | |
+  |   |   |      _  _  _|_  _   ,_  _|_ | |            ,_
+  |   |   |  |  / |/ |  |  |/  /  |  |  |/ \   |   |  /  |
+   \_/ \_/   |_/  |  |_/|_/|__/   |_/|_/|   |_/ \_/|_/   |_/  by Lupine Software LLC
 "
 
 print_context() {

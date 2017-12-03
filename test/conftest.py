@@ -1,6 +1,3 @@
-"""Configuration for testing
-"""
-# pylint: disable=redefined-outer-name,unused-argument
 import os
 
 import pytest
@@ -18,16 +15,11 @@ TEST_DIR = os.path.dirname(__file__)
 INI_FILE = os.path.join(TEST_DIR, '..', 'config', 'testing.ini')
 
 
-# -- Shared fixtures
-
-
 @pytest.fixture(scope='session')
 def dotenv() -> None:
-    """Loads dotenv file
-    """
-    from scythia.env import Env
+    from winterthur.env import Env
 
-    # same as scythia:main
+    # same as winterthur:main
     dotenv_file = os.path.join(TEST_DIR, '..', '.env')
     Env.load_dotenv_vars(dotenv_file)
 
@@ -36,26 +28,20 @@ def dotenv() -> None:
 
 @pytest.fixture(scope='session')
 def env(dotenv) -> dict:
-    """Returns env object
-    """
-    from scythia.env import Env
+    from winterthur.env import Env
 
     return Env()
 
 
 @pytest.fixture(scope='session')
 def raw_settings(dotenv) -> dict:
-    """Returns raw setting dict
-    """
     from pyramid.paster import get_appsettings
 
-    return get_appsettings('{0:s}#{1:s}'.format(INI_FILE, 'scythia'))
+    return get_appsettings('{0:s}#{1:s}'.format(INI_FILE, 'winterthur'))
 
 
 @pytest.fixture(scope='session')
 def resolve_settings() -> 'function':
-    """Returns resolving function for settings
-    """
     def _resolve_settings(raw_s):
         # pass
         return raw_s
@@ -65,15 +51,11 @@ def resolve_settings() -> 'function':
 
 @pytest.fixture(scope='session')
 def settings(raw_settings, resolve_settings) -> 'function':
-    """Returns (environ) resolved settings
-    """
     return resolve_settings(raw_settings)
 
 
 @pytest.fixture(scope='session')
 def extra_environ(env) -> dict:
-    """Returns extra environ object
-    """
     environ = {
         'SERVER_PORT': '80',
         'REMOTE_ADDR': '127.0.0.1',
@@ -82,51 +64,36 @@ def extra_environ(env) -> dict:
     return environ
 
 
-# auto fixtures
-
 @pytest.yield_fixture(autouse=True, scope='session')
 def session_helper() -> None:
-    """A helper function for session scope
-    """
     yield
 
 
 @pytest.yield_fixture(autouse=True, scope='module')
 def module_helper(settings) -> None:
-    """A helper function for module scope
-    """
     yield
 
 
 @pytest.yield_fixture(autouse=True, scope='function')
 def function_helper() -> None:
-    """A helper function for function scope
-    """
     yield
 
 
-# -- View tests
-
 @pytest.fixture(scope='session')
 def config(request, settings) -> Configurator:
-    """Returns the testing config
-    """
     from pyramid import testing
 
     config = testing.setUp(settings=settings)
 
-    # FIXME:
-    #    these includings from .ini file are not evaluated
-    #    in unit tests. (pyramid.includes)
     config.include('pyramid_assetviews')
     config.include('pyramid_mako')
     config.include('pyramid_services')
 
-    config.include('scythia.services')
-    config.include('scythia.models')
-    config.include('scythia.views')
+    config.include('winterthur.services')
+    config.include('winterthur.models')
+    config.include('winterthur.views')
 
-    config.include('scythia.route')
+    config.include('winterthur.route')
 
     def teardown() -> None:
         """The teardown function
@@ -140,8 +107,6 @@ def config(request, settings) -> Configurator:
 
 @pytest.fixture(scope='function')
 def dummy_request(extra_environ) -> Request:
-    """Returns Dummy request object
-    """
     from pyramid import testing
     from pyramid_services import find_service
     from zope.interface.adapter import AdapterRegistry
@@ -161,13 +126,9 @@ def dummy_request(extra_environ) -> Request:
     return req
 
 
-# -- Functional tests
-
 @pytest.fixture(scope='session')
 def _app(raw_settings) -> Router:
-    """Returns the internal app of app for testing
-    """
-    from scythia import main
+    from winterthur import main
 
     global_config = {
         '__file__': INI_FILE
@@ -180,6 +141,4 @@ def _app(raw_settings) -> Router:
 
 @pytest.fixture(scope='session')
 def dummy_app(_app, extra_environ) -> TestApp:
-    """Returns a dummy test app
-    """
     return TestApp(_app, extra_environ=extra_environ)

@@ -4,8 +4,8 @@ import ipaddress
 from pyramid.decorator import reify
 from pyramid.request import Request
 
-from scythia.env import Env
-from scythia.models import db
+from winterthur.env import Env
+from winterthur.models import db
 
 __all__ = ['CustomRequest']
 
@@ -50,15 +50,13 @@ class CustomRequest(Request):
 
     @classmethod
     def open_db(cls):
-        """Opens database connection if it's not opened.
-        """
+        """Opens database connections if it's not opened."""
         if db.is_closed():
             db.connect()
 
     @classmethod
     def close_db(cls, req):
-        """Closes database connection if it's not closed.
-        """
+        """Closes database connections if it's not closed."""
         if not req.db.is_closed():
             req.db.close()
 
@@ -71,8 +69,7 @@ class CustomRequest(Request):
     # see https://github.com/Pylons/webob/issues/77
     @reify
     def remote_ip(self):
-        """Calculates client's ip address.
-        """
+        """Returns a calcurated client's ip address."""
         from collections import OrderedDict
         import itertools
 
@@ -106,8 +103,7 @@ class CustomRequest(Request):
         return ips[0] if is_found_trusted_ips else remote_addr
 
     def _ips_at(self, header):
-        """Returns valid ip address only.
-        """
+        """Returns valid ip address only."""
         value = self.environ.get(header, None)
         ips = re.split(r'[,\s]+', value) if value else []
         return [ip for ip in ips if IPV4_ADDR.match(ip) or IPV6_ADDR.match(ip)]

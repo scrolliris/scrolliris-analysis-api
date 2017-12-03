@@ -2,11 +2,10 @@ import sys
 
 from pyramid.scripts.pserve import PServeCommand
 
-from scythia.env import Env
+from winterthur.env import Env
 
 
 def main(argv=sys.argv, quiet=False):
-    """ run original pserve with .env support. """
     Env.load_dotenv_vars()
 
     command = PServeCommand(argv, quiet=quiet)

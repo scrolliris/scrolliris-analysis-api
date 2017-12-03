@@ -6,7 +6,7 @@ from pyramid.paster import (
     setup_logging
 )
 
-from scythia.env import Env
+from winterthur.env import Env
 
 
 def usage(argv):
@@ -16,9 +16,12 @@ def usage(argv):
     sys.exit(1)
 
 
-def main(argv=sys.argv, quiet=False):
-    """ start server process. """
+def main(argv=None):
     import cherrypy
+
+    if not argv:
+        argv = sys.argv
+
     if len(argv) < 2:
         usage(argv)
 

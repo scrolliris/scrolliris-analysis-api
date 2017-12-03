@@ -1,13 +1,11 @@
-"""Setup Script.
-"""
+# pylint: disable=invalid-name
 import os
 
 from setuptools import setup, find_packages
 
-# pylint: disable=invalid-name
 here = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(here, *('doc', 'README.rst'))) as f:
-    README = f.read()
+with open(os.path.join(here, *('doc', 'DESCRIPTION.rst'))) as f:
+    DESCRIPTION = f.read()
 with open(os.path.join(here, 'CHANGELOG')) as f:
     CHANGELOG = f.read()
 
@@ -47,10 +45,10 @@ production_requires = [
 ]
 
 setup(
-    name='scythia',
+    name='winterthur',
     version='0.1',
     description='',
-    long_description=README + '\n\n' + CHANGELOG,
+    long_description=DESCRIPTION + '\n\n' + CHANGELOG,
     classifiers=[
         "Programming Language :: Python",
         "Framework :: Pyramid",
@@ -70,16 +68,12 @@ setup(
         'production': production_requires,
     },
     install_requires=requires,
-    message_extractors={'scythia': [
-        ('**.py', 'python', None),
-        ('static/**', 'ignore', None),
-    ]},
     entry_points="""\
     [paste.app_factory]
-    main = scythia:main
+    main = winterthur:main
     [console_scripts]
-    scythia_pserve = scythia.scripts.pserve:main
-    scythia_pstart = scythia.scripts.pstart:main
-    scythia_manage = scythia.scripts.manage:main
+    winterthur_pserve = winterthur.scripts.pserve:main
+    winterthur_pstart = winterthur.scripts.pstart:main
+    winterthur_manage = winterthur.scripts.manage:main
     """,
 )

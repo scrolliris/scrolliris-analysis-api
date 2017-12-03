@@ -1,22 +1,32 @@
-# Scythia
+# Winterthur
 
-`//`
+`/ˈvɪntərtuːr/`
 
-[![build status](https://gitlab.com/scrolliris/scythia/badges/master/build.svg)](
-https://gitlab.com/scrolliris/scythia/commits/master) [![coverage report](
-https://gitlab.com/scrolliris/scythia/badges/master/coverage.svg)](
-https://gitlab.com/scrolliris/scythia/commits/master)
+[![pipeline status][pipeline]][commit] [![coverage report][coverage]][commit]
+
+
+```txt
+ _                                       _
+(_|   |   |_/o                          | |
+  |   |   |      _  _  _|_  _   ,_  _|_ | |            ,_
+  |   |   |  |  / |/ |  |  |/  /  |  |  |/ \   |   |  /  |
+   \_/ \_/   |_/  |  |_/|_/|__/   |_/|_/|   |_/ \_/|_/   |_/
+
+Winterthur; Web INTERface THroUgh Readability data
+```
+
+The backend api of data calculated by [Scrolliris](
+https://about.scrolliris.com/).
 
 
 ## Repository
 
-https://gitlab.com/scrolliris/scythia
+https://gitlab.com/scrolliris/winterthur
 
 
 ## Requirements
 
-* Python `3.5.0`
-* Node.js `7.8.0` (build)
+* Python `3.5.4` (or `2.7.14`)
 * DynamoDB
 
 
@@ -27,14 +37,6 @@ https://gitlab.com/scrolliris/scythia
 % python3.5 -m venv venv
 % source venv/bin/activate
 (venv) % pip install --upgrade pip setuptools
-
-: node.js (e.g. nodeenv)
-(venv) % pip install nodeenv
-(venv) % nodeenv --python-virtualenv --with-npm --node=7.8.0
-: re-activate for node.js at this time
-(venv) % source venv/bin/activate
-(venv) % npm --version
-5.3.0
 ```
 
 ### Development
@@ -43,7 +45,7 @@ Use `waitress` as wsgi server.
 Check `Makefile`.
 
 ```zsh
-% cd /path/to/scythia
+% cd /path/to/winterthur
 % source venv/bin/activate
 
 : set env
@@ -51,10 +53,6 @@ Check `Makefile`.
 
 : install packages
 (venv) % ENV=development make setup
-
-: install node modules & run gulp task
-(venv) % npm install --global gulp-cli eslint
-(venv) % npm install --ignore-scripts
 
 (venv) % gulp
 
@@ -88,7 +86,7 @@ E.g. Google App Engine
   downloads/google-cloud-sdk-<VERSION>-linux-x86_64.tar.gz
 
 : check sha256 checksum
-(venv) % echo "<CHECKSUM>" "" ./google-cloud-sdk-<VERSION>-linux-x86_64.tar.gz \
+(venv) % echo "CHECKSUM" "" ./google-cloud-sdk-<VERSION>-linux-x86_64.tar.gz \
   | sha256sum -c -
 ./google-cloud-sdk-<VERSION>-linux-x86_64.tar.gz: OK
 (venv) % tar zxvf google-cloud-sdk-<VERSION>-linux-x86_64.tar.gz
@@ -114,10 +112,12 @@ e.g. to publish to gcp (appengine)
 ```
 
 
-## Style check & Lint
+## Style Check & Lint
 
 * flake8
+* flake8-docstrings (pep257)
 * pylint
+* eslint
 
 ```zsh
 : check style with flake8
@@ -140,14 +140,35 @@ It requires `docker`.
 
 ## License
 
+This project is distributed as free software.
+
 ```
-...
+Winterthur
 Copyright (c) 2017 Lupine Software LLC
 ```
 
+### Software
 
-This is free software;  
-You can redistribute it and/or modify it under the terms of the
-GNU Affero General Public License (AGPL).
+`AGPL-3.0`
+
+```txt
+This is free software: You can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+```
 
 See [LICENSE](LICENSE).
+
+
+[pipeline]: https://gitlab.com/scrolliris/winterthur/badges/master/pipeline.svg
+[coverage]: https://gitlab.com/scrolliris/winterthur/badges/master/coverage.svg
+[commit]: https://gitlab.com/scrolliris/winterthur/commits/master
