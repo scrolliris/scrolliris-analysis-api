@@ -1,11 +1,7 @@
+# pylint: disable=redefined-outer-name,unused-argument
 import os
 
 import pytest
-
-from pyramid.config import Configurator
-from pyramid.request import Request
-from pyramid.router import Router
-from webtest.app import TestApp
 
 # NOTE:
 # The request variable in py.test is special context of testing.
@@ -16,32 +12,31 @@ INI_FILE = os.path.join(TEST_DIR, '..', 'config', 'testing.ini')
 
 
 @pytest.fixture(scope='session')
-def dotenv() -> None:
-    from winterthur.env import Env
+def dotenv():  # type() -> None
+    from winterthur.env import load_dotenv_vars
 
     # same as winterthur:main
     dotenv_file = os.path.join(TEST_DIR, '..', '.env')
-    Env.load_dotenv_vars(dotenv_file)
-
+    load_dotenv_vars(dotenv_file)
     return
 
 
 @pytest.fixture(scope='session')
-def env(dotenv) -> dict:
+def env(dotenv):  # type(None) -> dict
     from winterthur.env import Env
 
     return Env()
 
 
 @pytest.fixture(scope='session')
-def raw_settings(dotenv) -> dict:
+def raw_settings(dotenv):  # type(None) -> dict
     from pyramid.paster import get_appsettings
 
     return get_appsettings('{0:s}#{1:s}'.format(INI_FILE, 'winterthur'))
 
 
 @pytest.fixture(scope='session')
-def resolve_settings() -> 'function':
+def resolve_settings():  # type() -> function
     def _resolve_settings(raw_s):
         # pass
         return raw_s
@@ -50,12 +45,13 @@ def resolve_settings() -> 'function':
 
 
 @pytest.fixture(scope='session')
-def settings(raw_settings, resolve_settings) -> 'function':
+def settings(raw_settings, resolve_settings):
+    # type(dict, function) -> function
     return resolve_settings(raw_settings)
 
 
 @pytest.fixture(scope='session')
-def extra_environ(env) -> dict:
+def extra_environ(env):  # type(Env) -> dict
     environ = {
         'SERVER_PORT': '80',
         'REMOTE_ADDR': '127.0.0.1',
@@ -65,22 +61,22 @@ def extra_environ(env) -> dict:
 
 
 @pytest.yield_fixture(autouse=True, scope='session')
-def session_helper() -> None:
+def session_helper():  # type() -> None
     yield
 
 
 @pytest.yield_fixture(autouse=True, scope='module')
-def module_helper(settings) -> None:
+def module_helper(settings):  # type(dict) -> None
     yield
 
 
 @pytest.yield_fixture(autouse=True, scope='function')
-def function_helper() -> None:
+def function_helper():  # type() -> None
     yield
 
 
 @pytest.fixture(scope='session')
-def config(request, settings) -> Configurator:
+def config(request, settings):  # type(Request, dict) -> Configurator
     from pyramid import testing
 
     config = testing.setUp(settings=settings)
@@ -106,7 +102,7 @@ def config(request, settings) -> Configurator:
 
 
 @pytest.fixture(scope='function')
-def dummy_request(extra_environ) -> Request:
+def dummy_request(extra_environ):  # type(dict) -> Request
     from pyramid import testing
     from pyramid_services import find_service
     from zope.interface.adapter import AdapterRegistry
@@ -127,7 +123,7 @@ def dummy_request(extra_environ) -> Request:
 
 
 @pytest.fixture(scope='session')
-def _app(raw_settings) -> Router:
+def _app(raw_settings):  # type(dict) -> Router
     from winterthur import main
 
     global_config = {
@@ -140,5 +136,6 @@ def _app(raw_settings) -> Router:
 
 
 @pytest.fixture(scope='session')
-def dummy_app(_app, extra_environ) -> TestApp:
+def dummy_app(_app, extra_environ):  # type(Router, dict) -> TestApp
+    from webtest.app import TestApp
     return TestApp(_app, extra_environ=extra_environ)

@@ -6,7 +6,7 @@ from pyramid.paster import (
     setup_logging
 )
 
-from winterthur.env import Env
+from winterthur.env import Env, load_dotenv_vars
 
 
 def usage(argv):
@@ -25,17 +25,17 @@ def main(argv=None):
     if len(argv) < 2:
         usage(argv)
 
-    Env.load_dotenv_vars()
-    env = Env()
+    load_dotenv_vars()
 
     config = argv[1]
     wsgi_app = get_app(config)
     setup_logging(config)
 
     cherrypy.tree.graft(wsgi_app, '/')
-
     cherrypy.server.unsubscribe()
-    server = cherrypy._cpserver.Server()
+
+    env = Env()
+    server = cherrypy._cpserver.Server()  # pylint: disable=protected-access
     server.socket_host = env.host
     server.socket_port = env.port
     server.thread_pool = 30

@@ -4,12 +4,12 @@ from datetime import datetime, timedelta
 from contextlib import contextmanager
 
 
-def tag_datetime_utcnow_plus_timedelta(loader, node):
+def tag_datetime_utcnow_plus_timedelta(_loader, node):
     return datetime.utcnow() + timedelta(seconds=literal_eval(node.value))
 
 
 @contextmanager
-def yaml_loader(settings={}):
+def yaml_loader(settings=None):
     # only for development and testing
     import yaml
 
@@ -24,7 +24,7 @@ def yaml_loader(settings={}):
         return data
 
     # simple utility functions for tag in yaml
-    if settings:
+    if settings and isinstance(settings, dict):
         yaml.add_constructor(
             '!datetime.utcnow+timedelta',
             tag_datetime_utcnow_plus_timedelta)

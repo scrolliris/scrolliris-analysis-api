@@ -3,8 +3,23 @@ import os
 from pyramid.decorator import reify
 
 
-# OS's environ handler (wrapper)
-# This class has utilities to treat environment variables.
+def load_dotenv_vars(dotenv_file=None):
+    # loads .env
+    if dotenv_file is None:
+        dotenv_file = os.path.join(os.getcwd(), '.env')
+    if os.path.isfile(dotenv_file):
+        print('loading environment variables from .env')
+        from dotenv import load_dotenv
+        load_dotenv(dotenv_file)
+
+    # update vars using prefix such as {TEST_|DEVELOPMENT_|PRODUCTION_}
+    for _, v in Env.settings_mappings().items():
+        prefix = '{}_'.format(Env.env_name().upper())
+        env_v = os.environ.get(prefix + v, None)
+        if env_v is not None:
+            os.environ[v] = env_v
+
+
 class Env():
     VALUES = ('development', 'test', 'production')
 
@@ -17,24 +32,7 @@ class Env():
         return v if v in cls.VALUES else 'production'
 
     @classmethod
-    def load_dotenv_vars(cls, dotenv_file=None):
-        # loads .env
-        if dotenv_file is None:
-            dotenv_file = os.path.join(os.getcwd(), '.env')
-        if os.path.isfile(dotenv_file):
-            print('loading environment variables from .env')
-            from dotenv import load_dotenv
-            load_dotenv(dotenv_file)
-
-        # update vars using prefix such as {TEST_|DEVELOPMENT_|PRODUCTION_}
-        for _, v in cls.settings_mappings().items():
-            prefix = '{}_'.format(cls.env_name().upper())
-            env_v = os.environ.get(prefix + v, None)
-            if env_v is not None:
-                os.environ[v] = env_v
-
-    @classmethod
-    def settings_mappings(cls) -> dict:
+    def settings_mappings(cls):
         return {
             # Note: these values are updated if exist but not empty
             'wsgi.url_scheme': 'WSGI_URL_SCHEME',
@@ -47,10 +45,10 @@ class Env():
             'dynamodb.table_name': 'DYNAMODB_TABLE_NAME',
         }
 
-    def get(self, key, default=None):
+    def get(self, key, default=None):  # pylint: disable=no-self-use
         return os.environ.get(key, default)
 
-    def set(self, key, value):
+    def set(self, key, value):  # pylint: disable=no-self-use
         os.environ[key] = value
 
     @reify

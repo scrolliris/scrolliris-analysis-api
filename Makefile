@@ -74,6 +74,13 @@ check:
 	flake8
 .PHONY: check
 
+lint:
+	pylint test ${app}
+.PHONY: lint
+
+vet: | check lint
+.PHONY: vet
+
 clean:
 	find . ! -readable -prune -o \
 	 ! -path "./.git/*" ! -path "./venv*" \

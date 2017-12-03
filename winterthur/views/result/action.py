@@ -17,11 +17,11 @@ def result_read_event(req):
     """Returns data for reflector canvas."""
     from winterthur import logger
 
-    # FIXME: use decorator
+    # TODO: use decorator
     if 'api_key' not in req.params:
         raise exc.HTTPForbidden()
 
-    # FIXME: use decorator
+    # TODO: use decorator
     if str(req.accept).lower() != 'application/json':
         raise exc.HTTPNotFound()
 
@@ -45,8 +45,8 @@ def result_read_event(req):
     try:
         result = ReadingResult.fetch_paragraph_median_by(
             project_id=project_id, site_id=site_id)
-    except Exception as e:
-        logger.error(e)
+    except ReadingResult.DoesNotExist:
+        result = {}
 
     logger.info(result)
 

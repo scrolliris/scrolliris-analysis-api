@@ -6,7 +6,7 @@ from pyramid.paster import get_appsettings, setup_logging
 from pyramid.scripts.common import parse_vars
 
 from winterthur import resolve_env_vars
-from winterthur.env import Env
+from winterthur.env import load_dotenv_vars
 from winterthur.models import ReadingResult
 from winterthur.utils import yaml_loader
 
@@ -123,7 +123,7 @@ def main():
     options = parse_vars(argv[4:])
 
     setup_logging(config_uri)
-    Env.load_dotenv_vars()
+    load_dotenv_vars()
 
     # TODO: parse command and actions
     if command not in ('db',):
