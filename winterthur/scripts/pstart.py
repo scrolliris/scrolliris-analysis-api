@@ -16,7 +16,7 @@ def usage(argv):
     sys.exit(1)
 
 
-def main(argv=None):
+def wsgi_app(argv=None):
     from winterthur.env import load_dotenv_vars
 
     if not argv:
@@ -28,17 +28,18 @@ def main(argv=None):
     load_dotenv_vars()
 
     config_uri = argv[1] if 1 in argv else 'config/production.ini'
-    wsgi_app = get_app(config_uri, 'winterthur')
+    app = get_app(config_uri, 'winterthur')
     setup_logging(config_uri)
 
-    return wsgi_app
+    return app
 
 
-if __name__ == '__main__':
+def main(argv=None):
     import cherrypy
 
+    app = wsgi_app(argv)
+
     # pylint: disable=invalid-name
-    app = main(sys.argv)
     cherrypy.tree.graft(app, '/')
     cherrypy.server.unsubscribe()
 
@@ -52,4 +53,6 @@ if __name__ == '__main__':
     cherrypy.engine.start()
     cherrypy.engine.block()
 
-    sys.exit(app or 0)
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv) or 0)
