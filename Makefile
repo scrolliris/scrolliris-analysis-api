@@ -54,7 +54,7 @@ endif
 
 # server (development)
 serve:
-	./bin/serve --env ${env} --config config/${env}.ini --reload
+	./bin/serve -e ${env} -c config/${env}.ini --reload
 .PHONY: serve
 
 # -- testing
