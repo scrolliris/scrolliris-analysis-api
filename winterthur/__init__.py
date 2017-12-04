@@ -55,12 +55,20 @@ def resolve_env_vars(settings):
 
     env = Env()
     s = settings.copy()
+
+    string_type = str
+    if sys.version_info[0] < 3:
+        try:
+            # `types.StringTypes` works also in Python2.7's unicode
+            string_type = types.StringTypes
+        except AttributeError:
+            pass
+
     for k, k_upper in Env.settings_mappings().items():
         # ignores missing key or it has a already value in config
         if k not in s or s[k]:
             continue
-        # `types.StringTypes` works also in Python2.7's unicode
-        new_v = get_new_v(env, k_upper, types.StringTypes)
+        new_v = get_new_v(env, k_upper, string_type)
         if new_v:
             s[k] = new_v
     return s
