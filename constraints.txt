@@ -2,7 +2,7 @@ boto3==1.4.4
 colorlog==2.10.0
 Paste==2.0.3
 PasteScript==2.0.2
-peewee==2.9.1
+peewee==2.10.2
 psycopg2==2.6.2
 python-dotenv==0.6.4
 pyramid==1.9.1
