@@ -1,6 +1,12 @@
 # pylint: disable=inherit-non-class,no-self-argument,no-method-argument
-from datetime import datetime, timedelta, timezone
+from __future__ import absolute_import
 import logging
+import sys
+from datetime import datetime, timedelta
+try:
+    from datetime import timezone
+except ImportError:
+    from time import timezone
 
 import boto3
 from boto3.dynamodb.conditions import Key, Attr
@@ -16,8 +22,14 @@ class ICollator(Interface):
 
 class ContextError(Exception):
     """Custom error class for session context."""
+
     def __init__(self, value):
-        super().__init__()
+        if sys.version_info[0] > 3:
+            # pylint: disable=missing-super-argument
+            super().__init__()
+        else:
+            super(ContextError, self).__init__()
+
         self.value = value
 
     def __str__(self):
@@ -44,7 +56,11 @@ class BaseDynamoDBServiceObject(object):
 class SessionCollator(BaseDynamoDBServiceObject):
     def __init__(self, *args, **kwargs):
         self.item = None
-        super().__init__(*args, **kwargs)
+        if sys.version_info[0] > 3:
+            # pylint: disable=missing-super-argument
+            super().__init__(*args, **kwargs)
+        else:
+            super(SessionCollator, self).__init__(*args, **kwargs)
 
     @classmethod
     def options(cls, settings):

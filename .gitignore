@@ -1,16 +1,22 @@
 __pycache__/
-
 *.egg-info/
 *.egg
-
-.*-version
+*.pyc
 
 .cache
+
+.*-version
 
 .env
 .env.ci
 .coverage
-/*.yaml
+
+/app.yaml
+/*_config.py
+/wsgi.py
+
+runtime.txt
+
 /db/**/*.yml
 !/db/**/*.sample.yml
 
@@ -19,16 +25,14 @@ __pycache__/
 
 /lib/*_local*
 /lib/*sdk*
-
-/venv*
+/vendor
 
 /static/*
 !/static/.gitignore
 !/static/*.txt
 
-/*-sdk*
-/bin/*.sh
-
-/tmp/_cache/*
 /tmp/log/*
+/tmp/_cache/*
 !/tmp/log/.gitignore
+
+/venv*

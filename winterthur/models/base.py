@@ -5,15 +5,16 @@ from psycopg2.extras import NumericRange
 from . import db  # pylint: disable=import-self
 
 
-class Base(Model):  # pylint: disable=too-few-public-methods
+# pylint: disable=too-few-public-methods,no-init,old-style-class
+class Base(Model):
     class Meta:
-        # pylint: disable=too-few-public-methods
         database = db
 
 
 class NumericRangeField(Field):
     # pylint: disable=no-self-use
     """Range type field definition for numeric value."""
+
     db_field = 'numrange'
 
     def get_column_type(self):

@@ -11,7 +11,8 @@ from peewee import (
 from .base import Base, NumericRangeField
 
 
-class ReadingResult(Base):  # pylint: disable=too-few-public-methods
+# pylint: disable=too-few-public-methods,no-init,old-style-class
+class ReadingResult(Base):
     # pylint: disable=too-many-ancestors
     id = PrimaryKeyField()
     element_id = CharField(max_length=255, unique=True)
@@ -34,7 +35,6 @@ class ReadingResult(Base):  # pylint: disable=too-few-public-methods
     updated_at = DateTimeField(null=False, default=datetime.utcnow)
 
     class Meta:
-        # pylint: disable=too-few-public-methods
         db_table = 'reading_results'
 
     def __repr__(self):
