@@ -1,8 +1,10 @@
+from __future__ import absolute_import
 import logging
+import socket
 import sys
+import types
 from wsgiref.handlers import BaseHandler
 
-from paste.translogger import TransLogger
 from pyramid.config import Configurator
 from pyramid.threadlocal import get_current_registry
 
@@ -14,7 +16,11 @@ from winterthur.env import Env
 # pylint: disable=protected-access
 def ignore_broken_pipes(self):
     """Ignores unused error message about broken pipe."""
-    if sys.exc_info()[0] != BrokenPipeError:
+    try:
+        ex = BrokenPipeError
+    except NameError:
+        ex = socket.error
+    if sys.exc_info()[0] != ex:
         BaseHandler.__handle_error_original_(self)
 
 
@@ -37,20 +43,35 @@ def get_settings():
     return get_current_registry().settings
 
 
+def get_expected_env_value_from(env, key, expected_type):
+    """Get value(s) through environment variable."""
+    value = env.get(key, None)
+    if not isinstance(value, expected_type):
+        return None
+    # split, but ignore empty string
+    if ',' in value:
+        value = [v for v in value.split(',') if v != '']
+    return value
+
+
 def resolve_env_vars(settings):
     env = Env()
     s = settings.copy()
-    for k, v in Env.settings_mappings().items():
+
+    string_type = str
+    if sys.version_info[0] < 3:
+        try:
+            # `types.StringTypes` works also in Python2.7's unicode
+            string_type = types.StringTypes
+        except AttributeError:
+            pass
+
+    for k, k_upper in Env.settings_mappings().items():
         # ignores missing key or it has a already value in config
         if k not in s or s[k]:
             continue
-        new_v = env.get(v, None)
-        if not isinstance(new_v, str):
-            continue
-        # ignores empty string
-        if ',' in new_v:
-            s[k] = [nv for nv in new_v.split(',') if nv != '']
-        elif new_v:
+        new_v = get_expected_env_value_from(env, k_upper, string_type)
+        if new_v:
             s[k] = new_v
     return s
 
@@ -69,5 +90,7 @@ def main(_, **settings):
     config.include('.route')
 
     app = config.make_wsgi_app()
-    app = TransLogger(app, setup_console_handler=False)
+    # enable file logger [wsgi/access_log]
+    # from paste.translogger import TransLogger
+    # app = TransLogger(app, setup_console_handler=False)
     return app

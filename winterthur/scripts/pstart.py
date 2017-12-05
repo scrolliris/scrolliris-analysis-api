@@ -6,7 +6,7 @@ from pyramid.paster import (
     setup_logging
 )
 
-from winterthur.env import Env, load_dotenv_vars
+from winterthur.env import Env
 
 
 def usage(argv):
@@ -16,8 +16,8 @@ def usage(argv):
     sys.exit(1)
 
 
-def main(argv=None):
-    import cherrypy
+def wsgi_app(argv=None):
+    from winterthur.env import load_dotenv_vars
 
     if not argv:
         argv = sys.argv
@@ -27,11 +27,20 @@ def main(argv=None):
 
     load_dotenv_vars()
 
-    config = argv[1]
-    wsgi_app = get_app(config)
-    setup_logging(config)
+    config_uri = argv[1] if 1 in argv else 'config/production.ini'
+    app = get_app(config_uri, 'winterthur')
+    setup_logging(config_uri)
 
-    cherrypy.tree.graft(wsgi_app, '/')
+    return app
+
+
+def main(argv=None):
+    import cherrypy
+
+    app = wsgi_app(argv)
+
+    # pylint: disable=invalid-name
+    cherrypy.tree.graft(app, '/')
     cherrypy.server.unsubscribe()
 
     env = Env()
@@ -46,4 +55,4 @@ def main(argv=None):
 
 
 if __name__ == '__main__':
-    sys.exit(main() or 0)
+    sys.exit(main(sys.argv) or 0)

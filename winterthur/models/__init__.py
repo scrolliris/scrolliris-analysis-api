@@ -1,4 +1,7 @@
-from urllib.parse import urlparse, parse_qs
+try:
+    from urllib.parse import urlparse, parse_qs
+except ImportError:
+    from urlparse import urlparse, parse_qs
 
 from playhouse.pool import PooledPostgresqlDatabase
 

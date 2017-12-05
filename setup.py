@@ -1,8 +1,9 @@
-# pylint: disable=invalid-name
 import os
+import sys
 
 from setuptools import setup, find_packages
 
+# pylint: disable=invalid-name
 here = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(here, *('doc', 'DESCRIPTION.rst'))) as f:
     DESCRIPTION = f.read()
@@ -23,12 +24,23 @@ requires = [
     'pyramid_services',
 ]
 
+if sys.version_info[0] < 3:  # python 2.7
+    requires.extend([
+        'ipaddress',
+        'typing',
+    ])
+
 development_requires = [
     'colorlog',
-    'flake8',
-    'pylint',
     'PyYAML',
     'waitress',
+
+    'flake8',
+    'flake8_docstrings',
+    'pydocstyle',
+    'pycodestyle',
+    'pyflakes',
+    'pylint',
 ]
 
 testing_requires = [
