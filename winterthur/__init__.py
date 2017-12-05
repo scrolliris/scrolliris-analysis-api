@@ -43,16 +43,18 @@ def get_settings():
     return get_current_registry().settings
 
 
-def resolve_env_vars(settings):
-    def get_new_v(env, value, expected_type):
-        new_v = env.get(value, None)
-        if not isinstance(new_v, expected_type):
-            return None
-        # split, but ignore empty string
-        if ',' in new_v:
-            new_v = [v for v in new_v.split(',') if v != '']
-        return new_v
+def get_expected_env_value_from(env, key, expected_type):
+    """Get value(s) through environment variable."""
+    value = env.get(key, None)
+    if not isinstance(value, expected_type):
+        return None
+    # split, but ignore empty string
+    if ',' in value:
+        value = [v for v in value.split(',') if v != '']
+    return value
 
+
+def resolve_env_vars(settings):
     env = Env()
     s = settings.copy()
 
@@ -68,7 +70,7 @@ def resolve_env_vars(settings):
         # ignores missing key or it has a already value in config
         if k not in s or s[k]:
             continue
-        new_v = get_new_v(env, k_upper, string_type)
+        new_v = get_expected_env_value_from(env, k_upper, string_type)
         if new_v:
             s[k] = new_v
     return s
