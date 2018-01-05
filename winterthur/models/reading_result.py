@@ -57,11 +57,12 @@ class ReadingResult(Base):
         data = dict([(str(r.subject_index), r.median_value) for r in res])
         # normalize
         values = data.values()
-        min_v = min(values)
-        max_v = max(values)
+        min_v = min(values) if values else 0
+        max_v = max(values) if values else 0
+        v = (max_v - min_v) if (max_v - min_v) > 0 else 1
         result = []
         for k in sorted(data.keys()):
             result.append((k, '{0:.2f}'.format(
-                (data[k] - min_v) / (max_v - min_v))))
+                (data[k] - min_v) / v)))
 
         return [('p', dict(result))]
