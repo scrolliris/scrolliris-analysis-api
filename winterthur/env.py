@@ -35,7 +35,7 @@ class Env(object):
     @staticmethod
     def settings_mappings():  # type() -> dict
         return {
-            # Note: these values are updated if exist but not empty
+            # NOTE: these values are updated if exist but not empty
             'response_prefix': 'RESPONSE_PREFIX',
             'database.url': 'DATABASE_URL',
             'aws.access_key_id': 'AWS_ACCESS_KEY_ID',

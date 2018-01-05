@@ -9,6 +9,26 @@ from winterthur.models import ReadingResult
 from winterthur.services import ICollator
 from winterthur.env import Env
 
+@view_config(route_name='result_read_event',
+             renderer='json',
+             request_method='OPTIONS')
+def result_read_event_option(req):
+    """Returns response with header informations for OPTIONS request."""
+    env = Env()
+    prefix = env.get('RESPONSE_PREFIX', '')
+    res = Response(prefix + json.dumps({}), status='200 OK')
+    res.headers['Content-Type'] = 'application/json; charset=utf-8'
+    res.headers['Content-Encoding'] = 'identity'
+    res.headers['Access-Control-Max-Age'] = '600'
+    res.headers['Access-Control-Expose-Headers'] = \
+      'Cache-Control,Content-Language,Content-Type,Expires,Last-Modified,Pragma'
+    res.headers['Access-Control-Allow-Origin'] = '*'
+    res.headers['Access-Control-Allow-Headers'] = \
+      'Content-Type,X-Requested-With,X-CSRF-Token'
+    res.headers['Access-Control-Allow-Methods'] = 'OPTIONS,GET'
+    res.headers['X-Content-Type-Options'] = 'nosniff'
+    return res
+
 
 @view_config(route_name='result_read_event',
              renderer='json',

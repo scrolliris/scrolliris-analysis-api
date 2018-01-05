@@ -36,10 +36,10 @@ def session_predicator(inf, req):
     return False
 
 
-def version_predicator(info, _req):
+def version_predicator(inf, _req):
     """Validates `version_id` parameter."""
-    if info['route'].name in ('result_read_event',):
-        return info['match']['version_id'] in ('1.0',)
+    if inf['route'].name in ('result_read_event',):
+        return inf['match'].get('version_id', '') in ('1.0',)
 
 
 def includeme(config):
