@@ -20,7 +20,10 @@ runtime.txt
 /db/**/*.yml
 !/db/**/*.sample.yml
 
+# deployment script
 /bin/deliver
+/bin/cleanup
+
 /bin/gitlab-ci-multi-runner
 
 /lib/*_local*
