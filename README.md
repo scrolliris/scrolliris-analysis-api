@@ -1,8 +1,12 @@
-# Winterthur
+# Scrolliris Analysis API
 
-`/ˈvɪntərtuːr/`
+Code Name: `Winterthur /ˈvɪntərtuːr/`
 
 [![pipeline status][pipeline]][commit] [![coverage report][coverage]][commit]
+
+[pipeline]: https://gitlab.com/scrolliris/scrolliris-analysis-api/badges/master/pipeline.svg
+[coverage]: https://gitlab.com/scrolliris/scrolliris-analysis-api/badges/master/coverage.svg
+[commit]: https://gitlab.com/scrolliris/scrolliris-analysis-api/commits/master
 
 
 ```txt
@@ -21,7 +25,7 @@ https://about.scrolliris.com/).
 
 ## Repository
 
-https://gitlab.com/scrolliris/winterthur
+https://gitlab.com/scrolliris/scrolliris-analysis-api
 
 
 ## Requirements
@@ -143,7 +147,7 @@ It requires `docker`.
 This project is distributed as free software.
 
 ```
-Winterthur
+Scrolliris Analysis API
 Copyright (c) 2017 Lupine Software LLC
 ```
 
@@ -167,8 +171,3 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 ```
 
 See [LICENSE](LICENSE).
-
-
-[pipeline]: https://gitlab.com/scrolliris/winterthur/badges/master/pipeline.svg
-[coverage]: https://gitlab.com/scrolliris/winterthur/badges/master/coverage.svg
-[commit]: https://gitlab.com/scrolliris/winterthur/commits/master
